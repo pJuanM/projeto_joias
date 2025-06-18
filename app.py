@@ -1,6 +1,7 @@
 from flask import Flask, jsonify, render_template, request, redirect, url_for, flash
 import sqlite3
 from datetime import datetime
+import os
 
 app = Flask(__name__)
 app.secret_key = "chave_secreta_supersegura"  # Chave para mensagens flash (requerida pelo Flask)
@@ -453,4 +454,5 @@ def relatorios():
 if __name__ == '__main__':
     # Cria tabelas antes de iniciar o servidor
     criar_tabelas()
-    app.run(debug=True)
+    porta = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=porta, debug=True)
