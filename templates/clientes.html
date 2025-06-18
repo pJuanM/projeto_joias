@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}Clientes {% endblock %}
+{% block content %} 
+<h1 class="titulo">Clientes</h1>
+
+
+
+<table class="tabela">
+    <thead class="tabela_cabecalho">
+        <tr>
+            <th>NOME:</th>
+            <th>TELEFONE:</th>
+            <th>CPF/CNPJ:</th>
+        </tr>
+    </thead>
+    <tbody class="tabela_corpo">
+        {% for cliente in clientes %}
+        <tr onclick="verDetalhesCliente('{{ cliente.id }}')">
+            <td>{{ cliente.nome }}</td>
+            <td>{{ cliente.telefone }}</td>
+            <td>{{ cliente.cpf }}</td>
+        </tr>
+        {% else %}
+        <tr>
+            <td colspan="3" class="text-center">Nenhum cliente cadastrado</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<div id="overlay" class="overlay">
+    <div id="info_cliente" class="info_cliente info_extras">
+        <button class="botoes" id="fechar_info_extras">Fechar</button>
+
+        <picture class="info_cliente_img">
+            <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+                <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
+            <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
+            </svg>
+        </picture>
+        <div class="info_cliente_text">
+            <p>NOME CLIENTE</p>
+            <p>TELEFONE CLIENTE</p>
+            <p>CPF CLIENTE</p>
+        </div>
+    </div>
+</div>
+
+<a href="{{ url_for('novo_cliente') }}" class="botoes">Novo Cliente</a>
+{% endblock %}

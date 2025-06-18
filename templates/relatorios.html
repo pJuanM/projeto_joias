@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}Relatórios{% endblock %}
+{% block content %}
+<h1 class="titulo">Relatório de Vendas</h1>
+<ul class="lista_relatorio">
+    <li><strong>Total Vendido: </strong>R$ {{ '%.2f'|format(vendas.total) }}</li>
+    <li><strong>Total Recebido: </strong>R$ {{ '%.2f'|format(recebidos.recebido) }}</li>
+    <li><strong>Total Pendente: </strong>R$ {{ '%.2f'|format(pendente) }}</li>
+</ul>
+{% endblock %}

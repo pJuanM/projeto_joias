@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block title %}Novo Pedido{% endblock %}
+{% block content %}
+<h1>Novo Pedido</h1>
+<form class="container novo_pedido tabela" action="{{ url_for('novo_pedido') }}" method="post">
+    <label for="cliente_id">Cliente:
+        <select required name="cliente_id" id="cliente_id">
+            <option value="">Selecione...</option>
+            {% for cliente in clientes %}
+                <option value="{{ cliente.id }}">{{ cliente.nome }}</option>
+            {% endfor %}
+        </select>
+    </label>
+
+    <div id="itens-container">
+        <div class="item-pedido">
+            <label for="descricao">Descrição do Item:
+                <input type="text" name="descricao" required>
+            </label>
+            <label for="cor_pano">Cor do Pano:
+                <select name="cor_pano" required>
+                    <option value="">Selecione...</option>
+                    <option value="Preto">Preto</option>
+                    <option value="Vermelho">Vermelho</option>
+                </select>
+            </label>
+            <label for="quantidade">Quantidade:
+                <input type="number" name="quantidade" min="1" step="1" required>
+            </label>
+            <label for="valor_unitario">Valor Unitário (R$):
+                <input type="number" name="valor_unitario" step="0.01" min="1" required>
+            </label>
+        </div>
+    </div>
+    <button type="button" class="botoes" onclick="adicionarItem()">Adicionar Item</button>
+
+    <label for="forma_pagamento">Forma de Pagamento:
+        <select required name="forma_pagamento" id="forma_pagamento">
+            <option value="">Selecione...</option>
+            <option value="Dinheiro">Dinheiro</option>
+            <option value="PIX">PIX</option>
+            <option value="Cartão">Cartão</option>
+        </select>
+    </label>
+    <label for="parcelas">Parcelas:
+        <input required type="number" name="parcelas" id="parcelas" min="1" max="3" step="1">
+    </label>
+    </br>
+    <button type="submit" class="botoes">Salvar Pedido</button>
+</form>
+
+
+
+<script>
+    function adicionarItem() {
+        const container = document.getElementById("itens-container");
+        const item = document.querySelector(".item-pedido").cloneNode(true);
+        item.querySelectorAll("input, select").forEach(input => input.value = "");
+        container.appendChild(item);
+    }
+</script>
+
+{% endblock %}

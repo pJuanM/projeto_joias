@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block title %}Pagamentos {% endblock %}
+{% block content %}
+<h1 class="titulo">Pagamentos</h1>
+
+
+<form class="container novo_pagamento" action="{{ url_for('novo_pagamento') }}" method="post">
+    <h2>Registrar Novo Pagamento</h2>
+    <label for="pedido_id">Pedido:
+        <select name="pedido_id" id="pedido_id" required>
+            <option value="">Selecione um pedido...</option>
+            {% for pedido in pedidos %}
+                <option value="{{ pedido.id }}">
+                    {{ pedido.cliente_nome }} - {{ pedido.descricao }} - Saldo: R$ {{ '%.2f'|format(pedido.saldo_pendente) }}
+                </option>
+            {% endfor %}
+        </select>
+    </label>
+
+    <label for="valor_pago">Valor Pago (R$):
+        <input placeholder="R$###,##" type="number" name="valor_pago" max="{{ saldo_pendente }}" id="valor_pago" step="0.01" min="0.01" required>
+    </label>
+
+    <button type="submit" class="botoes">Registrar Pagamento</button>
+</form>
+
+<hr/>
+
+<h2 class="pagamentos">Histórico de Pagamentos</h2>
+<table class="tabela_pagamentos container tabela">
+    <thead class="tabela_cabecalho">
+        <tr>
+            <th>CLIENTE</th>
+            <th>PEDIDO</th>
+            <th>VALOR PAGO</th>
+        </tr>
+    </thead>
+    <tbody class="tabela_corpo">
+        {% for pagamento in pagamentos %}
+            <tr onclick="verDetalhesPagamento('{{ pagamento.id }}')">
+                <td>{{ pagamento.cliente_nome }}</td>
+                <td>{{ pagamento.pedido_id }}</td>
+                <td>R$ {{ '%.2f'|format(pagamento.valor_pago) }}</td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">Nenhum pagamento registrado</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<div id="overlay" class="overlay">
+    <div id="info_cliente" class="info_cliente info_extras">
+        <button class="botoes" id="fechar_info_extras">Fechar</button>
+
+        <picture class="info_cliente_img">
+            <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+                <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
+            <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
+            </svg>
+        </picture>
+        <div class="info_cliente_text info_pagamento_text">
+            <p>NOME CLIENTE</p>
+            <p>TELEFONE CLIENTE</p>
+            <p>CPF CLIENTE</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

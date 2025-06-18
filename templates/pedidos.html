@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% block title %}Pedidos{% endblock %}
+{% block content %} 
+<h1 class="titulo">Pedidos</h1>
+
+<table class="tabela tabela_pedidos">
+    <thead class="tabela_cabecalho">
+        <tr>
+            <th>CLIENTE</th>
+            <th>TOTAL</th>
+            <th>PAGAMENTO</th>
+        </tr>
+    </thead>
+    <tbody class="tabela_corpo">
+        {% for pedido in pedidos %}
+            <tr id="tabela_pedido_item" onclick="verDetalhesPedido('{{ pedido.id }}')">
+                <td>{{ pedido.cliente_nome }}</td>
+                <td>{{ 'R$ %.2f'|format(pedido.total) }}</td>
+                <td>{{ pedido.forma_pagamento }}</td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5" style="text-align: center;">Nenhum pedido encontrado.</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<a href="{{ url_for('novo_pedido') }}" class="botoes">Novo Pedido</a>
+
+<div class="overlay" id="overlay">
+    <div class="info_extras" id="info_extras">
+        <button class="botoes" id="fechar_info_extras">Fechar</button>
+        <div class="info_cliente">
+            <picture class="info_cliente_img">
+                <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+                    <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
+                <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
+                </svg>
+            </picture>
+            <div class="info_cliente_text">
+                <p>NOME CLIENTE</p>
+                <p>TELEFONE CLIENTE</p>
+                <p>CPF CLIENTE</p>
+            </div>
+        </div>
+        <div class="info_pedido">
+            <h3 class="info_num_ped">NUMERO DO PEDIDO</h3>
+            <table class="tabela tabela_pedido_info info_pedido-itens">
+                <thead class="tabela_cabecalho">
+                    <tr>
+                        <th>Item</th>
+                        <th>Cor do pano</th>
+                        <th>Valor Unitário</th>
+                        <th>Quantidade</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody class="tabela_corpo">
+                    <tr>
+                        <td>NOME DO ITEM/td>
+                        <td>COR DO PANO</td>
+                        <td>VALOR UNITARIO</td>
+                        <td>QUANTIDADE</td>
+                        <td>TOTAL</td>
+                    </tr>
+                </tbody>
+                
+            </table>
+            <p class="info_pedido_time">DATA ATUAL</p>
+        </div>
+    </div>
+</div>
+{% endblock %}
