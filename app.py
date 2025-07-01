@@ -7,7 +7,7 @@ app = Flask(__name__)
 app.secret_key = "chave_secreta_supersegura"  # Chave para mensagens flash (requerida pelo Flask)
 
 # Nome do banco de dados
-DB_NAME = 'db.sqlite'
+DB_NAME = os.path.join(os.environ.get('DATA_DIR', '.'), 'db.sqlite')
 
 # Função para conectar ao banco de dados
 def db_connection():
