@@ -28,7 +28,7 @@ EXPOSE 5000
 # Script de inicialização
 RUN echo '#!/bin/bash\n\
 python -c "from app import criar_tabelas; criar_tabelas()"\n\
-flask run --host=0.0.0.0 --port=5000' > /app/start.sh && \
+gunicorn --bind 0.0.0.0:5000 --workers 4 --timeout 120 app:app' > /app/start.sh && \
 chmod +x /app/start.sh
 
 CMD ["/app/start.sh"] 
