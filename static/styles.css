@@ -10,6 +10,11 @@ a {
     text-decoration: none;
     cursor: pointer;
 }
+input[type="number"]::-webkit-inner-spin-button, 
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
 .container {
     padding: 1.5em 1em;
 }
@@ -17,8 +22,6 @@ a {
     font-weight: bold;
     text-decoration: underline;
 }
-
-
 .flash-messages {
     list-style: none;
     padding: 0;
@@ -49,7 +52,6 @@ a {
 .flash-messages li.warning {
     background-color: #ff9800; /* Laranja para avisos */
 }
-
 .btn-secondary {
     border-radius: 0 .7em .7em 0 !important;
 }
@@ -81,9 +83,25 @@ a {
     border-radius: 12px;
     box-shadow: 1px 1px 8px 3px #f3a700;
 }
-
-/* spacing */
-
+.botoes {
+    background-color: #A97C18;
+    color: #000000;
+    text-decoration: none;
+    padding: .7em;
+    font-weight: bold;
+    border: 1px solid black;
+    border-radius: 12px;
+}
+.botoes:hover {
+    background-color: #a97b18d5;
+    zoom: 1.04;
+    font-weight: normal;
+}
+.botao_editar {
+    position: absolute;
+    bottom: -1.7em;
+    right: 0;
+}
 .tabela  {
     table-layout: fixed;
     width: 100%;
@@ -91,20 +109,18 @@ a {
     border: 3px solid #a97c18;
     margin-bottom: 2em;
 }
-
 .tabela_cabecalho {
     border: 3px solid #a97c18;
 }
 .tabela_cabecalho th {
     border-right: 1px solid #ccc;
 }
-
 .tabela thead th:nth-child(1) {
-    width: 40%;
+    width: 30%;
 }
 .tabela thead th:nth-child(2),
 .tabela thead th:nth-child(3) {
-    width: 30%;
+    width: 35%;
 }
 .tabela th,
 .tabela td {
@@ -123,131 +139,23 @@ a {
 .tabela_corpo tr:nth-child(even) {
     background-color: #ffffff;
 }
-
 .tabela_corpo td {
     border-bottom:  1px solid #a97c18;
     border-right: 1px solid #ccc;
 }
-.botoes {
-    background-color: #A97C18;
-    color: #000000;
-    text-decoration: none;
-    padding: .7em;
-    font-weight: bold;
-    border: 1px solid black;
-    border-radius: 12px;
-}
-.botoes:hover {
-    background-color: #a97b18d5;
-    zoom: 1.04;
-    font-weight: normal;
-}
-.pagamentos {
-    display: block;
-    padding: .5em .375em;
-}
-.novo_pagamento {
-    border: 2px solid #a97c18;
-}
-.novo_pagamento #pedido_id,
-.novo_pagamento #valor_pago {
-    display: flex;
-    margin-bottom: 1.1em;
-    border-radius: 10px;
-    padding: .3em;
-    width: 300px;
-    border: 1px solid black ;
-}
-
-.novo_pagamento button {
-    border: 1px solid black;
-}
-input[type="number"]::-webkit-inner-spin-button, 
-input[type="number"]::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-}
-.tabela_pagamentos thead th:nth-child(1) {
-    width: 30%;
-}
-.tabela_pagamentos thead th:nth-child(2) {
-    width: 30%;
-}
-.tabela_pagamentos thead th:nth-child(3) {
-    width: 40%;
-}
-
-.lista_relatorio {
-    border: 2px solid #a97c18;
-    color: #4d4307c5;
-    border-radius: 10px;
-}
-.novo_cliente input {
-    display: flex;
-    margin-bottom: 1.1em;
-    border-radius: 10px;
-    padding: .3em;
-    width: 300px;
-    border: 1px solid black ;
-}
-
-.novo_pedido input,
-.novo_pedido select  {
-    padding: .3em;
-    border: 1px solid black;
-    border-radius: 10px;
-    margin-bottom: 1.1em;
-}
-.novo_pedido input:not(input[type="radio"], #parcelas) {
-    display: flex;
-}
-.novo_pedido select {
-    border-radius: 10px;
-}
-
-.tabela_pedidos th:nth-child(1) {
-    width: 30%;
-}
-.tabela_pedidos th:nth-child(2) {
-    width: 40%;
-}
-.tabela_pedidos th:nth-child(3) {
-    width: 30%;
-}
-
-
-
-
 .info_extras {
-    position: fixed;
+    position: relative;
     border: 2px solid #a97c18;
     background-color: white;
     border-radius: 10px;
-    padding: 1em;
+    padding: 2em;
     top: 25%;
-    right: 0;
     z-index: 100;
 }
-
-.info_cliente {
-    display: flex;
-    gap: 8em;
-}
-
-.tabela_pedido_info th:nth-child(1) {
-    width: 20%;
-}
-.tabela_pedido_info th:nth-child(2) {
-    width: 10%;
-}
-.tabela_pedido_info th:nth-child(3) {
-    width: 20%;
-}
-.tabela_pedido_info th:nth-child(4) {
-    width: 30%;
-}
-.tabela_pedido_info th:nth-child(5) {
-    width: 30%;
+#fechar_info_extras {
+    position: absolute;
+    top: -1.7em;
+    right: 0;
 }
 .overlay {
     position: fixed;
@@ -264,48 +172,148 @@ input[type="number"]::-webkit-outer-spin-button {
 .overlay.visible {
     display: flex;
 }
-#fechar_info_extras {
-    position: absolute;
-    top: -1.7em;
-    right: 0;
-}
 
-.cliente_info {
-    width: 90px;
-    height: 90px;
+/* CLIENTES */
+.novo_cliente input {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: white;
-    border-radius: 50%;
-    margin: 0 auto;
+    margin-bottom: 1.1em;
+    border-radius: 10px;
+    padding: .3em;
+    width: 300px;
+    border: 1px solid black ;
 }
-#info_cliente {
-    gap: 5em;
+.info_cliente {
+    display: flex;
+    gap: 2em;
 }
-#info_cliente picture {
+.info_cliente picture {
     margin: auto 0;
 }
-#info_cliente .info_cliente_text {
+.info_cliente .info_cliente_text {
     line-height: 1;
 }
-@media (max-width: 768px) {
-    .info_extras {
-        top: 10%;
-        left: 0;
-        width: 100%;
-        padding: 1em;
-        box-sizing: border-box;
-    }
+#form_editar_cliente label {
+    margin-bottom: .4em;
+    margin-left: 4px;
+}
+#form_editar_cliente input {
+    margin-top: 4px;
+    border-radius: 10px;
+    outline: none;
+    border: 1px solid rgb(66, 65, 65);
+    padding: .4em;
+    text-overflow: ellipsis;
+}
+.botao_salvar {
+    position: absolute;
+    bottom: -1.7em;
+    right: calc(6em);
+}
 
-    .tabela_pedido_info th,
-    .tabela_pedido_info td {
-        font-size: 13px;
-        padding: 0.5em;
-        white-space: normal;
-    }
 
-    .info_num_ped {
-        font-size: 16px;
-    }
+
+/* PEDIDOS */
+.novo_pedido input,
+.novo_pedido label,
+.novo_pedido select {
+    border-radius: 10px;
+    width: 100%;
+    padding: 0 .4em;
+    margin-bottom: .4em;
+}
+
+.item-pedido {
+    border: 2px solid black;
+    margin-bottom: 1em;
+    padding: 1em 0em;
+    position: relative;
+}
+.item-pedido-qnt-valor {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.pedido-pagamento {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+}
+.adicionarItem {
+    width: 100%;
+    border-radius: 10px;
+    outline: none;
+    border: 2px solid #a97c18;
+    background-color: #000000;
+    color: white;
+    font-weight: 700;
+    font-size: .8em;
+    padding: 0.6em;
+
+}
+.toggleButton {
+    position: absolute;
+    display: block;
+    top: -1em;
+    left: 0;
+    border-radius: 10px;
+    outline: none;
+    padding: .3em;
+    border: 1px solid black;
+    color: white;
+    font-size: .8em;
+    background: #01311e;
+}
+.btn-remover{
+    position: absolute;
+    display: block;
+    top: -1em;
+    right: 0;
+    border-radius: 10px;
+    outline: none;
+    padding: .3em;
+    border: 1px solid black;
+    color: white;
+    font-size: .8em;
+    background: #663399;
+}
+}
+
+
+#tabela_pedido_info {
+    font-size: 0.7em;
+}
+#info_extras_pedido {
+    padding: 2em 0;
+}
+#tabela_pedido_info th:nth-child(-n+5) {
+    width: 20%;
+}
+
+/* PAGAMENTOS */
+.pagamentos {
+    display: block;
+    padding: .5em .375em;
+}
+.novo_pagamento {
+    border: 2px solid #a97c18;
+}
+.novo_pagamento #pedido_id,
+.novo_pagamento #valor_pago {
+    display: flex;
+    margin-bottom: 1.1em;
+    border-radius: 10px;
+    padding: .3em;
+    width: 300px;
+    border: 2px solid black;
+}
+.novo_pagamento #pedido_id:focus,
+.novo_pagamento #valor_pago:focus {
+    border: 2px solid #a97c18 !important;
+    outline: none;
+}
+
+/* RELATÓRIOS */
+.lista_relatorio {
+    border: 2px solid #a97c18;
+    color: #4d4307c5;
+    border-radius: 10px;
 }

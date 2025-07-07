@@ -11,14 +11,14 @@
             <option value="">Selecione um pedido...</option>
             {% for pedido in pedidos %}
                 <option value="{{ pedido.id }}">
-                    {{ pedido.cliente_nome }} - {{ pedido.descricao }} - Saldo: R$ {{ '%.2f'|format(pedido.saldo_pendente) }}
+                    {{ pedido.cliente_nome }} - Saldo: R$ {{ '%.2f'|format(pedido.saldo_pendente) }}
                 </option>
             {% endfor %}
         </select>
     </label>
 
     <label for="valor_pago">Valor Pago (R$):
-        <input placeholder="R$###,##" type="number" name="valor_pago" max="{{ saldo_pendente }}" id="valor_pago" step="0.01" min="0.01" required>
+        <input placeholder="R$###,##" type="number" name="valor_pago" max="{{ pedidos.saldo_pendente }}" id="valor_pago" step="0.01" min="0.01" required>
     </label>
 
     <button type="submit" class="botoes">Registrar Pagamento</button>
@@ -27,7 +27,7 @@
 <hr/>
 
 <h2 class="pagamentos">Histórico de Pagamentos</h2>
-<table class="tabela_pagamentos container tabela">
+<table class="container tabela">
     <thead class="tabela_cabecalho">
         <tr>
             <th>CLIENTE</th>

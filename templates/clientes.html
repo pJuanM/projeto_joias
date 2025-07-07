@@ -31,6 +31,8 @@
 <div id="overlay" class="overlay">
     <div id="info_cliente" class="info_cliente info_extras">
         <button class="botoes" id="fechar_info_extras">Fechar</button>
+        <button onclick="editarCliente()" class="botoes botao_editar">Editar</button>
+
 
         <picture class="info_cliente_img">
             <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
@@ -45,6 +47,7 @@
         </div>
     </div>
 </div>
+
 
 <a href="{{ url_for('novo_cliente') }}" class="botoes">Novo Cliente</a>
 {% endblock %}

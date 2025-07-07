@@ -96,6 +96,30 @@ def clientes():
     clientes = conn.execute("SELECT * FROM clientes ORDER BY id").fetchall()
     conn.close()
     return render_template("clientes.html", clientes=clientes)
+
+@app.route('/clientes/editar', methods=['POST'])
+def editar_cliente():
+    id = request.form['id']
+    nome = request.form['nome'].strip()
+    telefone = request.form['telefone'].strip()
+    cpf = request.form['cpf'].strip()
+
+    if not nome or not telefone or not cpf:
+        flash("Preencha todos os campos", "error")
+        return redirect(url_for("clientes"))
+    
+    try:
+        conn = db_connection()
+        conn.execute("UPDATE clientes SET nome=?, telefone=?, cpf=? WHERE id=?",(nome,telefone,cpf,id))
+        conn.commit()
+        flash("Cliente atualizado com sucesso!", "success")
+    except sqlite3.IntegrityError:
+        flash("CPF já está cadastrado para outro cliente.", "error")
+    finally:
+        conn.close()
+    return redirect(url_for("clientes"))
+
+
 @app.route('/clientes/novo', methods=['GET', 'POST'])
 def novo_cliente():
     """
@@ -183,13 +207,16 @@ def detalhes_pedido(pedido_id):
     pedido = cursor.execute("""
         SELECT 
             pedidos.id, 
-            pedidos.data_pedido, 
+            pedidos.data_pedido,
+            COALESCE(SUM(pagamentos.valor_pago),0) AS valor_pago_total,
             clientes.nome, 
             clientes.telefone, 
             clientes.cpf
         FROM pedidos
         JOIN clientes ON pedidos.cliente_id = clientes.id
-        WHERE pedidos.id = ?;
+        LEFT JOIN pagamentos ON pedidos.id = pagamentos.pedido_id
+        WHERE pedidos.id = ?
+        GROUP BY pedidos.id;                            
     """, (pedido_id,)).fetchone()
 
     # Itens do pedido
@@ -215,6 +242,7 @@ def detalhes_pedido(pedido_id):
     return jsonify({
         "id": pedido["id"],
         "data_pedido": pedido["data_pedido"],
+        "saldo": pedido["valor_pago_total"],
         "cliente": {
             "nome": pedido["nome"],
             "telefone": pedido["telefone"],
@@ -228,6 +256,7 @@ def detalhes_pedido(pedido_id):
                 "valor_unitario": item["valor_unitario"],
                 "quantidade": item["quantidade"],
                 "total":item["total"]
+                
             } for item in itens
         ]
     })
@@ -341,6 +370,8 @@ def pagamentos():
     """).fetchall()
     conn.close()
     return render_template("pagamentos.html", pagamentos=pagamentos, pedidos=pedidos)
+
+
 @app.route('/pagamentos/novo', methods=['POST'])
 def novo_pagamento():
     """

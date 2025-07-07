@@ -47,14 +47,18 @@ function verDetalhesPedido(id){
                 <td>${item.cor_pano}</td>
                 <td>R$ ${item.valor_unitario.toFixed(2)}</td>
                 <td>${item.quantidade}</td>
-                <td>R$ ${item.total.toFixed(2)}</td>
+                <td>R$ ${(item.total - data.saldo).toFixed(2)}</td>
             </tr>
             `;
             corpoTabela.innerHTML += linha;
         });
         // Mostrar overlay
         // Mostra o elemento com o ID overlay, que provavelmente cobre a tela com o card de informações.
-        document.getElementById("overlay").style.display = "block";
+        overlay = document.getElementById("overlay");
+        overlay.style.display = "block";
+        document.getElementById("fechar_info_extras").addEventListener("click", () => {
+            overlay.style.display = "none";
+        });
     });
 }
 
@@ -66,19 +70,53 @@ function verDetalhesCliente(id) {
             alert(data.erro);
             return;
         }
-        const clientes_tabela =  document.querySelector(".info_cliente_text");
-        clientes_tabela.innerHTML = "";
-        clientes_tabela.innerHTML = `
-            <p><strong>Nome: </strong> </p>
-            <p>${data.nome}</p>
-            <p><strong>Telefone:</strong> </p>
-            <p>${data.telefone}</p>
-            <p><strong>CPF: </strong></p>
-            <p>${data.cpf}</p>
+        const cliente_card =  document.querySelector(".info_cliente");
+        cliente_card.innerHTML = "";
+        cliente_card.innerHTML = `
+            <button class="botoes" id="fechar_info_extras">Fechar</button>
+            <button onclick="editarCliente()" class="botoes botao_editar">Editar</button>
+
+
+            <picture class="info_cliente_img">
+                <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+                    <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
+                <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
+                </svg>
+            </picture>
+            <form action="/clientes/editar" method="post" id="form_editar_cliente">
+                <input type="hidden" name="id" id="edit_id" value="${data.id}">
+
+                <label>Nome:
+                    <input type="text" name="nome" id="edit_nome" value="${data.nome}" disabled>
+                </label>
+
+                <label>Número:
+                    <input type="text" name="telefone" id="edit_telefone" value="${data.telefone}" disabled>
+                </label>
+
+                <label>CPF:
+                    <input type="text" name="cpf" id="edit_cpf" value="${data.cpf}" disabled>
+                </label>
+
+                <button type="submit" class="botoes botao_salvar" id="btn_salvar" style="display: none;">Salvar</button>
+            </form>
         `;
-        document.getElementById("overlay").style.display = "block";
+        overlay = document.getElementById("overlay");
+        overlay.style.display = "block";
+        document.getElementById("fechar_info_extras").addEventListener("click", () => {
+            overlay.style.display = "none";
+        });
+
     });   
 }
+
+function editarCliente() {
+    document.getElementById("edit_nome").disabled = false;
+    document.getElementById("edit_telefone").disabled = false;
+    document.getElementById("edit_cpf").disabled = false;
+    document.getElementById("btn_salvar").style.display = "inline-block";
+}
+
 function verDetalhesPagamento(id) {
     fetch(`/pagamentos/${id}`)
     .then(res => res.json())
@@ -103,8 +141,6 @@ function verDetalhesPagamento(id) {
 
 // Botão de fechar
 // Quando o botão "Fechar" é clicado, oculta o card de detalhes
-document.getElementById("fechar_info_extras").addEventListener("click", () => {
-  document.getElementById("overlay").style.display = "none";
-});
 
 
+ 

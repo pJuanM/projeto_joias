@@ -14,37 +14,45 @@
 
     <div id="itens-container">
         <div class="item-pedido">
-            <label for="descricao">Descrição do Item:
+            <button style="display: none;" type="button" class="toggleButton" onclick="toggleItem(this)">Detalhes</button>
+            <button style="display: none;" type="button" class="btn-remover" onclick="removerItem(this)">Remover</button>
+            <label>Descrição do Item:
                 <input type="text" name="descricao" required>
             </label>
-            <label for="cor_pano">Cor do Pano:
-                <select name="cor_pano" required>
-                    <option value="">Selecione...</option>
-                    <option value="Preto">Preto</option>
-                    <option value="Vermelho">Vermelho</option>
-                </select>
-            </label>
-            <label for="quantidade">Quantidade:
-                <input type="number" name="quantidade" min="1" step="1" required>
-            </label>
-            <label for="valor_unitario">Valor Unitário (R$):
-                <input type="number" name="valor_unitario" step="0.01" min="1" required>
-            </label>
+            <div class="item-pedido-ocultar">
+                <label>Cor do Pano:
+                    <select name="cor_pano" required>
+                        <option value="">Selecione...</option>
+                        <option value="Preto">Preto</option>
+                        <option value="Vermelho">Vermelho</option>
+                    </select>
+                </label>
+                <div class="item-pedido-qnt-valor">
+                    <label>Quantidade:
+                        <input type="number" name="quantidade" min="1" step="1" required>
+                    </label>
+                    <label>Valor Unitário (R$):
+                        <input type="number" name="valor_unitario" step="0.01" min="1" required>
+                    </label>
+                </div>
+            </div>
         </div>
     </div>
-    <button type="button" class="botoes" onclick="adicionarItem()">Adicionar Item</button>
-
-    <label for="forma_pagamento">Forma de Pagamento:
-        <select required name="forma_pagamento" id="forma_pagamento">
-            <option value="">Selecione...</option>
-            <option value="Dinheiro">Dinheiro</option>
-            <option value="PIX">PIX</option>
-            <option value="Cartão">Cartão</option>
-        </select>
-    </label>
-    <label for="parcelas">Parcelas:
-        <input required type="number" name="parcelas" id="parcelas" min="1" max="3" step="1">
-    </label>
+    <button type="button" class="adicionarItem" onclick="adicionarItem()">Adicionar Item</button>
+    
+    <div class="pedido-pagamento">
+        <label>Forma de Pagamento:
+            <select required name="forma_pagamento" id="forma_pagamento">
+                <option value="">Selecione...</option>
+                <option value="Dinheiro">Dinheiro</option>
+                <option value="PIX">PIX</option>
+                <option value="Cartão">Cartão</option>
+            </select>
+        </label>
+        <label>Parcelas:
+            <input required type="number" name="parcelas" id="parcelas" min="1" max="3" step="1">
+        </label>
+    </div>
     </br>
     <button type="submit" class="botoes">Salvar Pedido</button>
 </form>
@@ -52,12 +60,66 @@
 
 
 <script>
-    function adicionarItem() {
-        const container = document.getElementById("itens-container");
-        const item = document.querySelector(".item-pedido").cloneNode(true);
-        item.querySelectorAll("input, select").forEach(input => input.value = "");
-        container.appendChild(item);
+    function adicionarItem() { 
+        const container = document.getElementById("itens-container"); 
+        const itens = container.querySelectorAll(".item-pedido"); 
+        const toggleButton = document.querySelector(".toggleButton");
+        toggleButton.style.display = "block";
+        const btn_remover = document.querySelector(".btn-remover");
+        btn_remover.style.display = "block";
+
+        // Oculta todos os elementos ".item-pedido-ocultar" dos itens existes
+        itens.forEach(el => {
+            const ocultar = el.querySelector(".item-pedido-ocultar");
+            if (ocultar) ocultar.style.display = "none";
+        });
+
+        // Clona o primeiro item e limpa campos
+        const novo = itens[0].cloneNode(true);
+        novo.querySelectorAll("input,select").forEach(input => input.value = "");
+
+        // Mantém visível apenas o elemento ocultável do novo item
+        const novoOcultar = novo.querySelector(".item-pedido-ocultar");
+        if (novoOcultar) novoOcultar.style.display = "block";
+
+        container.appendChild(novo); 
     }
+    
+    function toggleItem(botao) {
+        // Sobe até o .item-pedido que contém o botão
+        const item = botao.closest(".item-pedido");
+        const ocultar = item.querySelector(".item-pedido-ocultar");
+
+        if (!ocultar) return;
+
+        const estaVisivel = ocultar.style.display === "block";
+
+        // Oculta todos os outros
+        document.querySelectorAll(".item-pedido-ocultar").forEach(div => {
+            div.style.display = "none";
+        });
+
+        // Mostra apenas se estava oculto
+        if (!estaVisivel) {
+            ocultar.style.display = "block";
+        }
+    }
+
+    function removerItem(botao) {
+        const item = botao.closest('.item-pedido');
+        const container = document.getElementById('itens-container');
+        const itens = container.querySelectorAll('.item-pedido');
+
+        // Para evitar remover o último item, caso queira manter pelo menos 1
+        if (itens.length <= 1) {
+            alert('Você deve ter pelo menos um item.');
+            return;
+        }
+
+        container.removeChild(item);
+    }
+
+   
 </script>
 
 {% endblock %}
