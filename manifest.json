@@ -1,6 +1,6 @@
 {
-  "name": "Meu App Flask",
-  "short_name": "FlaskApp",
+  "name": "Joias",
+  "short_name": "Joias",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
