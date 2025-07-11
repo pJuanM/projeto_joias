@@ -1,3 +1,10 @@
+if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("/static/js/service-worker.js")
+        .then(() => console.log("Service Worker registrado!"))
+        .catch((erro) => console.log("Erro ao registrar SW:", erro));
+}
+
+
 // Declaraar função que será chamada quando o usuário clicar em um pedido (recebendo o id deste pedido)
 function verDetalhesPedido(id){
     // Faz uma requisição GET para o endpoint do Flask /pedido/<id> usando o valor recebido.
